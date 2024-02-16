@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Week extends Model
 {
     use HasFactory;
+
+    public function getYear()
+    {
+        return $this->belongsTo(Year::class);
+    }
+
+    public function timeSlots()
+    {
+        return $this->hasMany(TimeSlot::class);
+    }
 }
