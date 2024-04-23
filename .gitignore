@@ -33,4 +33,6 @@ yarn-error.log
 /.npm
 /.ssh
 /.nvm
+/.dotnet
 /composer.phar
+*.sql

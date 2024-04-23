@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\WeekController;
+use App\Http\Controllers\Games\PostWeekUpdateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/update/live', [WeekController::class, 'liveUpdate']);
+Route::post('/update/post', [ PostWeekUpdateController::class, 'update' ]);
