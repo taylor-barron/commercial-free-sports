@@ -28,7 +28,7 @@ export default function Guest({ header, children }) {
                             </div>
                         </div>
 
-                        <div className="hidden sm:flex sm:items-center sm:ml-6">
+                        <div className="hidden sm:flex sm:items-center sm:ml-6 text-gray-200">
                             <div className="ml-3 relative">
                                 <Link href='/login'>Login</Link>
                             </div>
@@ -74,7 +74,7 @@ export default function Guest({ header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <Link href='/login'>
+                            <Link href='/login' className="text-gray-200">
                                 Log In
                             </Link>
                         </div>

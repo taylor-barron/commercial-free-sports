@@ -21,7 +21,7 @@ class ArticleController extends Controller
                 ];
             }),
             'title' => 'Commercial Free Football',
-            'create_url' => route('users.create'),
+            'create_url' => route('register'),
         ]);
     }
 }
