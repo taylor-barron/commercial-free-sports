@@ -81,11 +81,22 @@ class PostWeekUpdateController extends Controller
                 $game->save();
             }
 
-            return 200;
+            return [
+                
+                'code' => 200,
+                'game_id' => $game->id,
+                'time_slot_id' => $time_slot->id,
+                'week_id' => $week->id,
+                'year_id' => $year->id
+            ];
 
         } catch (\Exception $e) {
 
-            return 500;
+            return [
+                
+                'code' => 500,
+                'error' => $e->getMessage()
+            ];
         }
     }
 }
