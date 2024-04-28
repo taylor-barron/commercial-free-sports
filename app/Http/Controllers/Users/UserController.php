@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Users;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
+use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -17,21 +18,21 @@ class UserController extends Controller
 
         // return view('Users/welcome', ['name' => $name, 'email' => $email, 'phone' => $phone]);
         return Inertia::render('Users/Welcome', [
-            // 'user' => User::all()->map(function ($user) {
-            //     return [
-            //         'id' => $user->id,
-            //         'name' => $user->name,
-            //         'email' => $user->email,
-            //         'edit_url' => route('users.edit', $user),
-            //     ];
-            // }),
-            // 'user' => [
-            //     'id' => 1,
-            //     'name' => 'test',
-            // ],
-            'user' => null,
-            'title' => 'Commercial Free Football'
-            // 'create_url' => route('users.create'),
+            'user' => User::all()->map(function ($user) {
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'edit_url' => route('profile.edit', $user),
+                ];
+            }),
+            'title' => 'Commercial Free Football',
+            'create_url' => route('users.create'),
         ]);
+    }
+
+    public function create()
+    {
+        return Inertia::render('Users/Create');
     }
 }
