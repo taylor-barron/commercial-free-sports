@@ -10,7 +10,6 @@ class GameController extends Controller
 {
     public function currentWeek()
     {
-        return 'hi';
         return Inertia::render('Games/CurrentWeek');
     }
 }

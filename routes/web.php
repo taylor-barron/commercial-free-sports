@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Games\GameController;
+use App\Http\Controllers\Articles\ArticleController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Users\ProfileController;
 use App\Http\Controllers\Users\UserController;
@@ -19,24 +20,12 @@ use Inertia\Inertia;
 |
 */
 
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
-
-Route::middleware('auth')->controller(UserController::class)->group(function () {
-    Route::get('/testroute', 'testroute');
-});
-
 Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
 
-Route::get('/current-week', [GameController::class, 'currentWeek'])->name('current-week');
+Route::get('/current-week', [ GameController::class, 'currentWeek' ])->name('current-week');
+Route::get('/how-it-works', [ ArticleController::class, 'howItWorks' ])->name('how-it-works');
 
 Route::middleware('auth')->group(function () {
 

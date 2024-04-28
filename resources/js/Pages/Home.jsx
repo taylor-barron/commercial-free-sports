@@ -4,7 +4,6 @@ import HomeContent from '@/PageContent/HomeContent';
 import { Head } from '@inertiajs/react';
 
 export default function Dashboard({ auth }) {
-    console.log(auth);
     if (auth.user) {
         return (
             <AuthenticatedLayout
