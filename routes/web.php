@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Games\GameController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Users\ProfileController;
+use App\Http\Controllers\Users\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,19 +28,28 @@ use Inertia\Inertia;
 //     ]);
 // });
 
-Route::controller(UserController::class)->group(function () {
-    Route::get('/dashboardd', 'welcome');
-});
-
 Route::middleware('auth')->controller(UserController::class)->group(function () {
     Route::get('/testroute', 'testroute');
 });
 
 Route::get('/', function () {
     return Inertia::render('Home');
-})/*->middleware(['auth', 'verified'])*/->name('home');
+})->name('home');
+
+Route::get('/current-week', [GameController::class, 'currentWeek'])->name('current-week');
 
 Route::middleware('auth')->group(function () {
+
+    Route::post('/logout', function () {
+        Auth::logout();
+
+        request()->session()->invalidate();
+
+        request()->session()->regenerateToken();
+
+        return redirect('/');
+    })->name('logout');
+    Route::post('/create-user', [UserController::class, 'create'])->name('users.create');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

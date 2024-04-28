@@ -16,10 +16,10 @@ export default defineConfig({
     },
     server: {
         cors: true,
-        host: '18.219.64.10',
-        public: 'http://18.219.64.10',
+        host: process.env.APP_PUBLIC_IP,
+        public: `http://${process.env.APP_PUBLIC_IP}`,
         hmr: {
-            host: '18.219.64.10',
+            host: process.env.APP_PUBLIC_IP,
         },
     },
 });
