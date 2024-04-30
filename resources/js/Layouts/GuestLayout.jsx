@@ -22,8 +22,13 @@ export default function Guest({ header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+
                                 <NavLink href={route('home')} active={route().current('home')}>
                                     Home
+                                </NavLink>
+
+                                <NavLink href={route('current-week')} active={route().current('current-week')}>
+                                    Current Week
                                 </NavLink>
                             </div>
                         </div>
