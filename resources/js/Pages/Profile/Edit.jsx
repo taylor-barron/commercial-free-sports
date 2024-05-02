@@ -2,9 +2,10 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+import Sliders from './Partials/Sliders';
 import { Head } from '@inertiajs/react';
 
-export default function Edit({ auth, mustVerifyEmail, status }) {
+export default function Edit({ profile, auth, mustVerifyEmail, status }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -18,6 +19,13 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
                         <UpdateProfileInformationForm
                             mustVerifyEmail={mustVerifyEmail}
                             status={status}
+                            className="max-w-xl"
+                        />
+                    </div>
+
+                    <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                        <Sliders
+                            profile={profile}
                             className="max-w-xl"
                         />
                     </div>
