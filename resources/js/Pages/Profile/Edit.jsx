@@ -3,9 +3,10 @@ import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 import Sliders from './Partials/Sliders';
+import FavoriteTeams from './Partials/FavoriteTeams';
 import { Head } from '@inertiajs/react';
 
-export default function Edit({ profile, auth, mustVerifyEmail, status }) {
+export default function Edit({ profile, teams, auth, mustVerifyEmail, status }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -25,6 +26,13 @@ export default function Edit({ profile, auth, mustVerifyEmail, status }) {
 
                     <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                         <Sliders
+                            profile={profile}
+                            className="max-w-xl"
+                        />
+                    </div>
+
+                    <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                        <FavoriteTeams
                             profile={profile}
                             className="max-w-xl"
                         />

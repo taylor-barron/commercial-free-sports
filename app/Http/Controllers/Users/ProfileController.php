@@ -20,31 +20,18 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         $profile = $request->user()->profile;
-        if ($profile === null) {
+        
+        $profile_info = [
 
-            $profile = $request->user()->profile()->create();
-            $profile_info = [
-
-                'score_score' => env('SCORE_SCORE_WEIGHT') * 100,
-                'importance_score' => env('IMPORTANCE_SCORE_WEIGHT') * 100,
-                'explosiveness_score' => env('EXPLOSIVENESS_SCORE_WEIGHT') * 100,
-                'talent_score' => env('TALENT_SCORE_WEIGHT') * 100,
-                'penalty_score' => env('PENALTY_SCORE_WEIGHT') * 100,
-                'favorite_teams' => null,
-            ];
-
-        } else {
-
-            $profile_info = [
-
-                'score_score' => $profile->score_score !== null ? $profile->score_score : env('SCORE_SCORE_WEIGHT') * 100,
-                'importance_score' => $profile->importance_score !== null ? $profile->importance_score : env('IMPORTANCE_SCORE_WEIGHT') * 100,
-                'explosiveness_score' => $profile->explosiveness_score !== null ? $profile->explosiveness_score : env('EXPLOSIVENESS_SCORE_WEIGHT') * 100,
-                'talent_score' => $profile->talent_score !== null ? $profile->talent_score : env('TALENT_SCORE_WEIGHT') * 100,
-                'penalty_score' => $profile->penalty_score !== null ? $profile->penalty_score : env('PENALTY_SCORE_WEIGHT') * 100,
-                'favorite_teams' => $profile->favorite_teams,
-            ];
-        }
+            'score_score' => $profile->score_score !== null ? $profile->score_score : env('SCORE_SCORE_WEIGHT') * 100,
+            'importance_score' => $profile->importance_score !== null ? $profile->importance_score : env('IMPORTANCE_SCORE_WEIGHT') * 100,
+            'explosiveness_score' => $profile->explosiveness_score !== null ? $profile->explosiveness_score : env('EXPLOSIVENESS_SCORE_WEIGHT') * 100,
+            'talent_score' => $profile->talent_score !== null ? $profile->talent_score : env('TALENT_SCORE_WEIGHT') * 100,
+            'penalty_score' => $profile->penalty_score !== null ? $profile->penalty_score : env('PENALTY_SCORE_WEIGHT') * 100,
+            'favorite_teams' => $profile->favorite_teams !== null ? $profile->favorite_teams : '',
+        ];
+        
+        $teams = [];
 
         return Inertia::render('Profile/Edit', [
 
@@ -52,6 +39,28 @@ class ProfileController extends Controller
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
         ]);
+    }
+
+    // public function editFavoriteTeams(Request $request): Response
+    // {
+    //     $profile = $request->user()->profile;
+    //     $favorite_teams = $profile->favorite_teams;
+
+    //     return Inertia::render('Profile/EditFavoriteTeams', [
+
+    //         'favorite_teams' => $favorite_teams,
+    //         'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+    //         'status' => session('status'),
+    //     ]);
+    // }
+
+    public function updateFavoriteTeams(Request $request): RedirectResponse
+    {
+        $profile = $request->user()->profile;
+        $profile->favorite_teams = $request->favorite_teams;
+        $profile->save();
+
+        return back();
     }
 
     /**

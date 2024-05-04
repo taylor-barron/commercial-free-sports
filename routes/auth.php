@@ -57,6 +57,10 @@ Route::middleware('auth')->group(function () {
 
     Route::put('profile', [ ProfileController::class, 'updateSliders' ])->name('sliders.update');
 
+    Route::get('favorite-teams', [ ProfileController::class, 'editFavoriteTeams' ])->name('favorite-teams.edit');
+
+    Route::put('favorite-teams', [ ProfileController::class, 'updateFavoriteTeams' ])->name('favorite-teams.update');
+
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
 });
