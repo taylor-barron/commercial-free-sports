@@ -9,14 +9,8 @@ export default function FavoriteTeams({ profile, className = '' }) {
     const favoriteTeamsInput = useRef();
 
     const { data, setData, errors, put, reset, processing, recentlySuccessful } = useForm({
-        // favoriteTeams: profile.favorite_teams
-        // favoriteTeams: profile.favorite_teams.map((team) => team.id),
-        favoriteTeams: [],
-        teams: [
-            { id: 1, name: 'Team 1' },
-            { id: 2, name: 'Team 2' },
-            { id: 3, name: 'Team 3' },
-        ]
+        teams: profile.all_teams,
+        favoriteTeams: profile.favorite_teams,
     });
 
     const selectFavoriteTeam = (e) => {
@@ -54,17 +48,8 @@ export default function FavoriteTeams({ profile, className = '' }) {
     
         put(route('favorite-teams.update'), {
             preserveScroll: true,
-            onSuccess: () => reset(),
+            onSuccess: () => {},
             onError: (errors) => {
-                if (errors.password) {
-                    reset('password', 'password_confirmation');
-                    favoriteTeamsInput.current.focus();
-                }
-    
-                if (errors.current_password) {
-                    reset('current_password');
-                    currentPasswordInput.current.focus();
-                }
             },
         });
     };
