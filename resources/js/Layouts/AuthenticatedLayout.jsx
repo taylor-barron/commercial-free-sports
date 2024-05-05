@@ -4,6 +4,7 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
+import DefaultHead from '@/Components/DefaultHead';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -21,9 +22,15 @@ export default function Authenticated({ user, header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+
                                 <NavLink href={route('home')} active={route().current('home')}>
                                     Home
                                 </NavLink>
+
+                                <NavLink href={route('current-week')} active={route().current('current-week')}>
+                                    Current Week
+                                </NavLink>
+                                
                             </div>
                         </div>
 
@@ -113,11 +120,7 @@ export default function Authenticated({ user, header, children }) {
                 </div>
             </nav>
 
-            {header && (
-                <header className="bg-white dark:bg-gray-800 shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>
-                </header>
-            )}
+            <DefaultHead title={ header } />
 
             <main>{children}</main>
         </div>

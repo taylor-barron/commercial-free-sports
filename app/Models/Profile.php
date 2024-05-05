@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\TimeSlot;
+use App\Models\User;
 use App\Models\Team;
 
-class Game extends Model
+class Profile extends Model
 {
     use HasFactory;
 
-    public function getTimeSlot()
+    public function user()
     {
-        return $this->belongsTo(TimeSlot::class);
+        return $this->belongsTo(User::class);
     }
 
     public function teams()

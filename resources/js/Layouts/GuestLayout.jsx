@@ -4,6 +4,7 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
+import DefaultHead from '@/Components/DefaultHead';
 
 export default function Guest({ header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -21,13 +22,18 @@ export default function Guest({ header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+
                                 <NavLink href={route('home')} active={route().current('home')}>
                                     Home
+                                </NavLink>
+
+                                <NavLink href={route('current-week')} active={route().current('current-week')}>
+                                    Current Week
                                 </NavLink>
                             </div>
                         </div>
 
-                        <div className="hidden sm:flex sm:items-center sm:ml-6">
+                        <div className="hidden sm:flex sm:items-center sm:ml-6 text-gray-200">
                             <div className="ml-3 relative">
                                 <Link href='/login'>Login</Link>
                             </div>
@@ -73,7 +79,7 @@ export default function Guest({ header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <Link href='/login'>
+                            <Link href='/login' className="text-gray-200">
                                 Log In
                             </Link>
                         </div>
@@ -81,11 +87,7 @@ export default function Guest({ header, children }) {
                 </div>
             </nav>
 
-            {header && (
-                <header className="bg-white dark:bg-gray-800 shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>
-                </header>
-            )}
+            <DefaultHead title={ header } />
 
             <main>{children}</main>
         </div>

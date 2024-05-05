@@ -1,23 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Users;
+namespace App\Http\Controllers\Articles;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 
-class UserController extends Controller
+class ArticleController extends Controller
 {
-    //
-    public function welcome()
+    public function howItWorks()
     {
-        // $name = $request->input('name');
-        // $email = $request->input('email');
-        // $phone = $request->input('phone');
-
-        // return view('Users/welcome', ['name' => $name, 'email' => $email, 'phone' => $phone]);
-        return Inertia::render('Users/Welcome', [
+        return Inertia::render('Articles/HowItWorks', [
             'user' => User::all()->map(function ($user) {
                 return [
                     'id' => $user->id,
@@ -29,10 +23,5 @@ class UserController extends Controller
             'title' => 'Commercial Free Football',
             'create_url' => route('register'),
         ]);
-    }
-
-    public function create()
-    {
-        return Inertia::render('Auth/Register');
     }
 }
