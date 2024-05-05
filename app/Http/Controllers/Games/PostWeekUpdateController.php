@@ -8,6 +8,7 @@ use App\Models\Week;
 use App\Models\Game;
 use App\Models\TimeSlot;
 use App\Models\Year;
+use App\Models\Team;
 use App\Http\Controllers\Controller;
 use Carbon;
 
@@ -78,8 +79,27 @@ class PostWeekUpdateController extends Controller
                 $game->explosiveness_score = $request->explosivenessScore;
                 $game->talent_score = $request->talentScore;
                 $game->penalty_score = $request->penaltyScore;
-                $game->save();
             }
+
+            $home_team = Team::where('name', $request->homeTeam)->first();
+            if (!$home_team) {
+
+                $home_team = new Team();
+                $home_team->name = $request->homeTeam ? $request->homeTeam : 'Division 2 Team';
+                $home_team->color = $request->homeColor ? $request->homeColor : '#010101';
+                $home_team->save();
+            }
+
+            $away_team = Team::where('name', $request->awayTeam)->first();
+            if (!$away_team) {
+
+                $away_team = new Team();
+                $away_team->name = $request->awayTeam ? $request->awayTeam : 'Division 2 Team';
+                $away_team->color = $request->awayColor ? $request->awayColor : '#010101';
+                $away_team->save();
+            }
+
+            $game->save();
 
             return [
                 
