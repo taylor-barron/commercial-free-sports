@@ -10,86 +10,73 @@ use App\Models\Week;
 use App\Models\TimeSlot;
 use App\Models\Year;
 use App\Models\User;
+use App\Models\Profile;
+use App\Http\Controllers\Games\GameService;
 use Illuminate\Support\Facades\Auth;
 
 class GameController extends Controller
 {
-    public function currentWeek()
+    public function currentWeek(): \Inertia\Response
     {
+        $game_service = new GameService();
         $user = Auth::user();
+
+        $favorite_teams = [];
+        $custom_weights = [];
+        if ($user) {
+
+            $profile = $user->profile;
+            $favorite_teams = $game_service->getFavoriteTeams($profile);
+            $custom_weights = $game_service->getCustomWeights($profile);
+            $games['version'] = 'custom';
+
+        } else {
+            $games['version'] = 'default';
+        }
 
         $year = Year::where('year', Year::max('year'))->first();
 
-        $latest_week = Week::where('year_id', $year->id)->where('week', Week::max('week'))->first();
+        $latest_week = Week::where('year_id', /*$year->id*/2)->where('week', Week::max('week'))->first();
         $games['week'] = $latest_week->week;
 
         $time_slots = TimeSlot::where('week_id', $latest_week->id)->get();
         foreach ($time_slots as $time_slot) {
 
-            $games['time_slots'][] = [
+            $games['time_slots'][] = $game_service->getTimeSlotsInfo($time_slot);
 
-                'id' => $time_slot->id,
-                'time_slot' => $time_slot->timeslot,
-                'date' => date('F d, Y', strtotime($time_slot->date)),
-                'games' => [],
-            ];
+            $games_for_time_slot_objects = Game::where('time_slot_id', $time_slot->id)->get();
+            $games_last_key = 0;
+            foreach ($games_for_time_slot_objects as $game) {
 
-            $gamesForTimeSlot = Game::where('time_slot_id', $time_slot->id)->get();
-            foreach ($gamesForTimeSlot as $game) {
+                $time_slot_last_key = array_key_last($games['time_slots']);
+                $default_overall_score = $game_service->calculateDefaultOverallScore($game);
 
-                $last_key = array_key_last($games['time_slots']);
-                // if user and user has custom sliders need to also include the user's sliders
-                $overall_score = round(
-                    (env('SCORE_SCORE_WEIGHT') * $game->score_score) +
-                    (env('IMPORTANCE_SCORE_WEIGHT') * $game->importance_score) +
-                    (env('EXPLOSIVENESS_SCORE_WEIGHT') * $game->explosiveness_score) +
-                    (env('TALENT_SCORE_WEIGHT') * $game->talent_score) + 
-                    (env('PENALTY_SCORE_WEIGHT') * $game->penalty_score)
-                );
+                if ($user) {
 
-                $games['time_slots'][$last_key]['games'][] = [
+                    $custom_overall_score = null;
+                    $custom_overall_score = $game_service->calculateCustomOverallScore($game, $custom_weights);
+                    $games['time_slots'][$time_slot_last_key]['games']['custom'][$games_last_key] = $game_service->getCustomGameInfo($game, $favorite_teams, $custom_overall_score);
+                }
+                $games['time_slots'][$time_slot_last_key]['games']['default'][$games_last_key] = $game_service->getDefaultGameInfo($game, $favorite_teams, $default_overall_score);
 
-                    'id' => $game->id,
-                    'quarter' => $game->quarter,
-                    'start_time' => $game->start_time,
-                    'home_color' => $game->home_color,
-                    'away_color' => $game->away_color,
-                    'home_team' => $game->home_team,
-                    'away_team' => $game->away_team,
-                    'score_score' => $game->score_score,
-                    'importance_score' => $game->importance_score,
-                    'explosiveness_score' => $game->explosiveness_score,
-                    'talent_score' => $game->talent_score,
-                    'penalty_score' => $game->penalty_score,
-                    'overall_score' => $overall_score,
-                ];
+                $games_last_key++;
             }
 
-            usort($games['time_slots'][$last_key]['games'], function ($a, $b) {
-                return $b['overall_score'] <=> $a['overall_score'];
-            });
+            if (isset($games['time_slots'][$time_slot_last_key]['games']['custom'])) {
+                $games['time_slots'][$time_slot_last_key]['games']['custom'] = $game_service->sortGames($games['time_slots'][$time_slot_last_key]['games']['custom']);
+            }
+            $games['time_slots'][$time_slot_last_key]['games']['default'] = $game_service->sortGames($games['time_slots'][$time_slot_last_key]['games']['default']);
         }
 
-        if ($user) {
-            return Inertia::render('Games/CurrentWeek', [
+        return Inertia::render('Games/CurrentWeek', [
+            'user' => $user ? [
 
-                'user' => User::all()->map(function ($user) {
-                    return [
-
-                        'id' => $user->id,
-                        'name' => $user->name,
-                        'email' => $user->email,
-                        'edit_url' => route('profile.edit', $user),
-                    ];
-                }),
-
-                'games' => $games,
-            ]);
-        } else {
-
-            return Inertia::render('Games/CurrentWeek', [
-                'games' => $games,
-            ]);
-        }
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'edit_url' => route('profile.edit', $user),
+            ] : null,
+            'games' => $games,
+        ]);
     }
 }
