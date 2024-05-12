@@ -5,7 +5,7 @@
 export default function HomeContent({ user }) {
   return (
 
-    <div className="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+    <div className="relative sm:flex sm:justify-center sm:items-center bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white mt-0">
 
       <div className="max-w-7xl mx-auto p-6 lg:p-8">
 
@@ -13,7 +13,7 @@ export default function HomeContent({ user }) {
           <img src={Logo} alt="Logo" />
         </div> */}
 
-        <div className="mt-16">
+        <div className="mt-8">
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
 
