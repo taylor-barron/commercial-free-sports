@@ -13,7 +13,7 @@ export default function HomeContent({ user }) {
           <img src={Logo} alt="Logo" />
         </div> */}
 
-        <div className="mt-8">
+        <div className="mt-4">
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
 
@@ -23,7 +23,7 @@ export default function HomeContent({ user }) {
                     {/* <img src={FootballSVG} alt='football icon' className="w-6 h-6 text-red-500" /> */}hi
                   </div>
 
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900 dark:text-white">Current Week</h2>
+                    <h2 className="mt-6 text-xl font-semibold text-gray-900 dark:text-white">Last Week</h2>
 
                     <p className="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
                       Find the best games to watch this week. Games are ranked by how entertaining they are to watch so that you can watch the best games AND skip the commercials.

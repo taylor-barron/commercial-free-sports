@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 
 class GameController extends Controller
 {
-    public function currentWeek(): \Inertia\Response
+    public function Week($year, $week): \Inertia\Response
     {
         $game_service = new GameService();
         $user = Auth::user();
@@ -78,5 +78,23 @@ class GameController extends Controller
             ] : null,
             'games' => $games,
         ]);
+    }
+
+    public function nextWeek(): \Inertia\Response
+    {
+        $year = Year::where('year', Year::max('year'))->first();
+        $latest_week = Week::where('year_id', /*$year->id*/2)->where('week', Week::max('week'))->first();
+        $next_week = Week::where('year_id', /*$year->id*/2)->where('week', $latest_week->week + 1)->first();
+
+        return $this->Week($year, $next_week);
+    }
+
+    public function lastWeek(): \Inertia\Response
+    {
+        $year = Year::where('year', Year::max('year'))->first();
+        $latest_week = Week::where('year_id', /*$year->id*/2)->where('week', Week::max('week'))->first();
+        $last_week = Week::where('year_id', /*$year->id*/2)->where('week', $latest_week->week - 1)->first();
+
+        return $this->Week($year, $last_week);
     }
 }

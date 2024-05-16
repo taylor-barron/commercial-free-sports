@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GuestLayout from '@/Layouts/GuestLayout';
 import GameContent from '@/PageContent/GameContent';
 
-export default function HowItWorks({ auth, games }) {
+export default function CurrentWeek({ auth, games }) {
 
     if (auth.user) {
         return (
