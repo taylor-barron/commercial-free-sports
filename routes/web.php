@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Games\GameController;
 use App\Http\Controllers\Articles\ArticleController;
+use App\Http\Controllers\Weeks\WeekController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Users\ProfileController;
 use App\Http\Controllers\Users\UserController;
@@ -24,7 +25,11 @@ Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
 
-Route::get('/current-week', [ GameController::class, 'currentWeek' ])->name('current-week');
+Route::get('/next-week', [ GameController::class, 'nextWeek' ])->name('next-week');
+Route::get('/last-week', [ GameController::class, 'lastWeek' ])->name('last-week');
+Route::get('/all-weeks', [ WeekController::class, 'allWeeks' ])->name('all-weeks');
+Route::get('/best-ofs', [ WeekController::class, 'bestOfs' ])->name('best-ofs');
+
 Route::get('/how-it-works', [ ArticleController::class, 'howItWorks' ])->name('how-it-works');
 
 Route::middleware('auth')->group(function () {
