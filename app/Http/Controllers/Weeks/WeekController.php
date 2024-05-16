@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Weeks;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Games\GameController;
 use App\Models\Game;
 use App\Models\Week;
 use App\Models\TimeSlot;
@@ -31,7 +32,7 @@ class WeekController extends Controller
                     
                     'id' => $week->id,
                     'week' => $week->week,
-                    // 'link' => route('week', $week), fix this
+                    'link' => route('week.show', [ 'year' => $year->year, 'week' => $week->week ]),
                 ];
             }
             $years_info[] = [
@@ -54,12 +55,101 @@ class WeekController extends Controller
         ]);
     }
 
-    public function bestOfs(): \Inertia\Response
+    public function show($year, $week): \Inertia\Response
     {
-        $year = Year::where('year', Year::max('year'))->first();
-        $latest_week = Week::where('year_id', /*$year->id*/2)->where('week', Week::max('week'))->first();
-        $best_ofs_week = Week::where('year_id', /*$year->id*/2)->where('week', $latest_week->week - 1)->first();
+        $game_controller = new GameController();
+        $user = Auth::user();
 
-        return $this->Week($year, $best_ofs_week);
+        $favorite_teams = [];
+        $custom_weights = [];
+        if ($user) {
+
+            $profile = $user->profile;
+            $favorite_teams = $game_controller->getFavoriteTeams($profile);
+            $custom_weights = $game_controller->getCustomWeights($profile);
+            $games['version'] = 'custom';
+
+        } else {
+            $games['version'] = 'default';
+        }
+
+        $year_object = Year::where('year', $year)->first();
+
+        $week_object = Week::where('year_id', $year_object->id)->where('week', $week)->first();
+        $games['week'] = $week_object->week;
+
+        $time_slots = TimeSlot::where('week_id', $week_object->id)->get();
+        foreach ($time_slots as $time_slot) {
+
+            $games['time_slots'][] = $game_controller->getTimeSlotsInfo($time_slot);
+
+            $games_for_time_slot_objects = Game::where('time_slot_id', $time_slot->id)->get();
+            $games_last_key = 0;
+            foreach ($games_for_time_slot_objects as $game) {
+
+                $time_slot_last_key = array_key_last($games['time_slots']);
+                $default_overall_score = $game_controller->calculateDefaultOverallScore($game);
+
+                if ($user) {
+
+                    $custom_overall_score = null;
+                    $custom_overall_score = $game_controller->calculateCustomOverallScore($game, $custom_weights);
+                    $games['time_slots'][$time_slot_last_key]['games']['custom'][$games_last_key] = $game_controller->getCustomGameInfo($game, $favorite_teams, $custom_overall_score);
+                }
+                $games['time_slots'][$time_slot_last_key]['games']['default'][$games_last_key] = $game_controller->getDefaultGameInfo($game, $favorite_teams, $default_overall_score);
+
+                $games_last_key++;
+            }
+
+            if (isset($games['time_slots'][$time_slot_last_key]['games']['custom'])) {
+                $games['time_slots'][$time_slot_last_key]['games']['custom'] = $game_controller->sortGames($games['time_slots'][$time_slot_last_key]['games']['custom']);
+            }
+            $games['time_slots'][$time_slot_last_key]['games']['default'] = $game_controller->sortGames($games['time_slots'][$time_slot_last_key]['games']['default']);
+        }
+
+        return Inertia::render('Games/CurrentWeek', [
+            'user' => $user ? [
+
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'edit_url' => route('profile.edit', $user),
+            ] : null,
+            'games' => $games,
+        ]);
+    }
+
+    public function nextWeek()/*: \Inertia\Response*/
+    {
+        return 'this isn\'t done yet';
+    }
+
+    public function thisWeek(): \Inertia\Response
+    {
+        $year_object = Year::where('year', Year::max('year'))->first();
+        $week_object = Week::where('year_id', $year_object->id)
+            ->whereHas('games', function ($query) {
+                $query->whereNotNull('score_score');
+            })
+            ->orderBy('week', 'desc')
+            ->first();
+
+        if (!$week_object) {
+
+            $year_object = Year::where('year', Year::max('year') - 1)->first();
+            $week_object = Week::where('year_id', $year_object->id)
+            ->whereHas('games', function ($query) {
+                $query->whereNotNull('score_score');
+            })
+            ->orderBy('week', 'desc')
+            ->first();
+        }
+
+        return $this->show($year_object->year, $week_object->week);
+    }
+
+    public function bestOfs()/*: \Inertia\Response*/
+    {
+        return 'this isn\'t done yet';
     }
 }

@@ -18,4 +18,9 @@ class Week extends Model
     {
         return $this->hasMany(TimeSlot::class);
     }
+
+    public function games()
+    {
+        return $this->hasManyThrough(Game::class, TimeSlot::class);
+    }
 }
