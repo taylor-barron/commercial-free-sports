@@ -25,10 +25,11 @@ Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
 
-Route::get('/next-week', [ GameController::class, 'nextWeek' ])->name('next-week');
-Route::get('/last-week', [ GameController::class, 'lastWeek' ])->name('last-week');
+Route::get('/next-week', [ WeekController::class, 'nextWeek' ])->name('next-week');
+Route::get('/this-week', [ WeekController::class, 'thisWeek' ])->name('this-week');
 Route::get('/all-weeks', [ WeekController::class, 'allWeeks' ])->name('all-weeks');
 Route::get('/best-ofs', [ WeekController::class, 'bestOfs' ])->name('best-ofs');
+Route::get('/weeks/{year}/{week}', [ WeekController::class, 'show' ])->name('week.show');
 
 Route::get('/how-it-works', [ ArticleController::class, 'howItWorks' ])->name('how-it-works');
 
@@ -43,9 +44,9 @@ Route::middleware('auth')->group(function () {
 
         return redirect('/');
     })->name('logout');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ ProfileController::class, 'edit' ])->name('profile.edit');
+    Route::patch('/profile', [ ProfileController::class, 'update' ])->name('profile.update');
+    Route::delete('/profile', [ ProfileController::class, 'destroy' ])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';

@@ -2,99 +2,177 @@
 
 namespace App\Http\Controllers\Games;
 
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use App\Http\Controllers\Controller;
-use App\Models\Game;
-use App\Models\Week;
-use App\Models\TimeSlot;
-use App\Models\Year;
-use App\Models\User;
-use App\Models\Profile;
-use App\Http\Controllers\Games\GameService;
-use Illuminate\Support\Facades\Auth;
 
 class GameController extends Controller
 {
-    public function Week($year, $week): \Inertia\Response
+    public function getFavoriteTeams($profile)
     {
-        $game_service = new GameService();
-        $user = Auth::user();
-
         $favorite_teams = [];
+        $favorite_team_objects = $profile->teams()->get();
+        foreach($favorite_team_objects as $team) {
+            $favorite_teams[] = [
+
+                'id' => $team->id,
+                'name' => $team->name,
+            ];
+        }
+        return $favorite_teams;
+    }
+
+    public function getCustomWeights($profile)
+    {
         $custom_weights = [];
-        if ($user) {
+        if ($profile->score_score) {
+            $custom_weights = [
 
-            $profile = $user->profile;
-            $favorite_teams = $game_service->getFavoriteTeams($profile);
-            $custom_weights = $game_service->getCustomWeights($profile);
-            $games['version'] = 'custom';
-
+                'custom_score_score_weight' => $profile->score_score,
+                'custom_importance_score_weight' => $profile->importance_score,
+                'custom_explosiveness_score_weight' => $profile->explosiveness_score,
+                'custom_talent_score_weight' => $profile->talent_score,
+                'custom_penalty_score_weight' => $profile->penalty_score,
+            ];
         } else {
-            $games['version'] = 'default';
+            $custom_weights = [
+
+                'custom_score_score_weight' => env('SCORE_SCORE_WEIGHT') * 100,
+                'custom_importance_score_weight' => env('IMPORTANCE_SCORE_WEIGHT') * 100,
+                'custom_explosiveness_score_weight' => env('EXPLOSIVENESS_SCORE_WEIGHT') * 100,
+                'custom_talent_score_weight' => env('TALENT_SCORE_WEIGHT') * 100,
+                'custom_penalty_score_weight' => env('PENALTY_SCORE_WEIGHT') * 100,
+            ];
         }
-
-        $year = Year::where('year', Year::max('year'))->first();
-
-        $latest_week = Week::where('year_id', /*$year->id*/2)->where('week', Week::max('week'))->first();
-        $games['week'] = $latest_week->week;
-
-        $time_slots = TimeSlot::where('week_id', $latest_week->id)->get();
-        foreach ($time_slots as $time_slot) {
-
-            $games['time_slots'][] = $game_service->getTimeSlotsInfo($time_slot);
-
-            $games_for_time_slot_objects = Game::where('time_slot_id', $time_slot->id)->get();
-            $games_last_key = 0;
-            foreach ($games_for_time_slot_objects as $game) {
-
-                $time_slot_last_key = array_key_last($games['time_slots']);
-                $default_overall_score = $game_service->calculateDefaultOverallScore($game);
-
-                if ($user) {
-
-                    $custom_overall_score = null;
-                    $custom_overall_score = $game_service->calculateCustomOverallScore($game, $custom_weights);
-                    $games['time_slots'][$time_slot_last_key]['games']['custom'][$games_last_key] = $game_service->getCustomGameInfo($game, $favorite_teams, $custom_overall_score);
-                }
-                $games['time_slots'][$time_slot_last_key]['games']['default'][$games_last_key] = $game_service->getDefaultGameInfo($game, $favorite_teams, $default_overall_score);
-
-                $games_last_key++;
-            }
-
-            if (isset($games['time_slots'][$time_slot_last_key]['games']['custom'])) {
-                $games['time_slots'][$time_slot_last_key]['games']['custom'] = $game_service->sortGames($games['time_slots'][$time_slot_last_key]['games']['custom']);
-            }
-            $games['time_slots'][$time_slot_last_key]['games']['default'] = $game_service->sortGames($games['time_slots'][$time_slot_last_key]['games']['default']);
-        }
-
-        return Inertia::render('Games/CurrentWeek', [
-            'user' => $user ? [
-
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'edit_url' => route('profile.edit', $user),
-            ] : null,
-            'games' => $games,
-        ]);
+        return $custom_weights;
     }
 
-    public function nextWeek(): \Inertia\Response
+    public function getTimeSlotsInfo($time_slot)
     {
-        $year = Year::where('year', Year::max('year'))->first();
-        $latest_week = Week::where('year_id', /*$year->id*/2)->where('week', Week::max('week'))->first();
-        $next_week = Week::where('year_id', /*$year->id*/2)->where('week', $latest_week->week + 1)->first();
+        $time_slot = [
 
-        return $this->Week($year, $next_week);
+            'id' => $time_slot->id,
+            'time_slot' => $time_slot->timeslot,
+            'date' => date('F d, Y', strtotime($time_slot->date)),
+            'games' => [],
+        ];
+        return $time_slot;
     }
 
-    public function lastWeek(): \Inertia\Response
+    public function calculateDefaultOverallScore($game)
     {
-        $year = Year::where('year', Year::max('year'))->first();
-        $latest_week = Week::where('year_id', /*$year->id*/2)->where('week', Week::max('week'))->first();
-        $last_week = Week::where('year_id', /*$year->id*/2)->where('week', $latest_week->week - 1)->first();
+        $default_overall_score = round(
 
-        return $this->Week($year, $last_week);
+            (env('SCORE_SCORE_WEIGHT') * $game->score_score) +
+            (env('IMPORTANCE_SCORE_WEIGHT') * $game->importance_score) +
+            (env('EXPLOSIVENESS_SCORE_WEIGHT') * $game->explosiveness_score) +
+            (env('TALENT_SCORE_WEIGHT') * $game->talent_score) + 
+            (env('PENALTY_SCORE_WEIGHT') * $game->penalty_score)
+        );
+        return $default_overall_score;
+    }
+
+    public function calculateCustomOverallScore($game, $custom_weights)
+    {
+        $custom_overall_score = round(
+
+            (($custom_weights['custom_score_score_weight'] * $game->score_score) +
+            ($custom_weights['custom_importance_score_weight'] * $game->importance_score) +
+            ($custom_weights['custom_explosiveness_score_weight'] * $game->explosiveness_score) +
+            ($custom_weights['custom_talent_score_weight'] * $game->talent_score) + 
+            ($custom_weights['custom_penalty_score_weight'] * $game->penalty_score))
+            / 100
+        );
+        return $custom_overall_score;
+    }
+
+    public function getCustomGameInfo($game, $favorite_teams, $custom_overall_score)
+    {
+        $away_team = $game->away_team;
+        $home_team = $game->home_team;
+        $game_info = [
+
+            'id' => $game->id,
+            'favorite' => false,
+            'quarter' => $game->quarter,
+            'start_time' => $game->start_time,
+            'home_color' => $game->home_color,
+            'away_color' => $game->away_color,
+            'home_team' => $home_team,
+            'away_team' => $away_team,
+            'score_score' => $game->score_score,
+            'importance_score' => $game->importance_score,
+            'explosiveness_score' => $game->explosiveness_score,
+            'talent_score' => $game->talent_score,
+            'penalty_score' => $game->penalty_score,
+            'overall_score' => $custom_overall_score,
+        ];
+
+        foreach ($favorite_teams as $team) {
+            if ($team['name'] == $home_team) {
+
+                $game_info['favorite'] = true;
+                $game_info['favorite_color'] = $game['home_color'];
+                break;
+
+            } else if ($team['name'] == $away_team) {
+
+                $game_info['favorite'] = true;
+                $game_info['favorite_color'] = $game['away_color'];
+                break;
+            }
+        }
+        return $game_info;
+    }
+
+    public function getDefaultGameInfo($game, $favorite_teams, $default_overall_score)
+    {
+        $away_team = $game->away_team;
+        $home_team = $game->home_team;
+        $game_info = [
+
+            'id' => $game->id,
+            'favorite' => false,
+            'quarter' => $game->quarter,
+            'start_time' => $game->start_time,
+            'home_color' => $game->home_color,
+            'away_color' => $game->away_color,
+            'home_team' => $home_team,
+            'away_team' => $away_team,
+            'score_score' => $game->score_score,
+            'importance_score' => $game->importance_score,
+            'explosiveness_score' => $game->explosiveness_score,
+            'talent_score' => $game->talent_score,
+            'penalty_score' => $game->penalty_score,
+            'overall_score' => $default_overall_score,
+        ];
+
+        foreach ($favorite_teams as $team) {
+            if ($team['name'] == $home_team || $team['name'] == $away_team) {
+
+                $game_info['favorite'] = true;
+                break;
+            }
+        }
+        return $game_info;
+    }
+
+    public function sortGames($games)
+    {
+        usort($games, function ($a, $b) {
+            return $b['overall_score'] <=> $a['overall_score'];
+        });
+        
+        $favorite_games = [];
+        $non_favorite_games = [];
+        foreach ($games as $game) {
+            
+            if ($game['favorite']) {
+                $favorite_games[] = $game;
+            } else {
+                $non_favorite_games[] = $game;
+            }
+        }
+        $games = array_merge($favorite_games, $non_favorite_games);
+
+        return $games;
     }
 }

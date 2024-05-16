@@ -23,8 +23,8 @@ export default function CommonLinks() {
                     Next Week
                 </NavLink>
 
-                <NavLink href={route('last-week')} active={route().current('last-week')}>
-                    Last Week
+                <NavLink href={route('this-week')} active={route().current('this-week')}>
+                    This Week
                 </NavLink>
 
                 <NavLink href={route('all-weeks')} active={route().current('all-weeks')}>
