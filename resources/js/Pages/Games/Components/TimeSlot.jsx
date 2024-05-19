@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Game from './Game';
 import Button from '@/Components/Button';
 
-const TimeSlot = ({ time_slot, scoreType }) => {
+const TimeSlot = ({ auth, time_slot, scoreType }) => {
 
     const [isHidden, setIsHidden] = useState(false);
 
@@ -29,14 +29,10 @@ const TimeSlot = ({ time_slot, scoreType }) => {
 
             {!isHidden && (
                 <div className="flex flex-row justify-between">
-                    <div className="flex flex-col w-1/2">
+                    <div className="flex flex-col w-full">
                         {time_slot.games[scoreType].map((game) => (
-                            <Game key={game.id} game={game} />
+                            <Game key={game.id} auth={auth} game={game} />
                         ))}
-                    </div>
-                    
-                    <div className="flex items-center justify-center">
-                        I go to the right
                     </div>
                 </div>
             )}

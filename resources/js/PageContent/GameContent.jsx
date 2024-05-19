@@ -45,7 +45,7 @@ export default function GameContent({ user, games }) {
 
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 {games.time_slots.map((time_slot) => (
-                    <TimeSlot key={time_slot.id} time_slot={time_slot} scoreType={scoreType} />
+                    <TimeSlot key={time_slot.id} auth={user} time_slot={time_slot} scoreType={scoreType} />
                 ))}
             </div>
         </div>
