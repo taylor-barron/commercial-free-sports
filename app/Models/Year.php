@@ -13,4 +13,16 @@ class Year extends Model
     {
         return $this->hasMany(Week::class);
     }
+
+    public function games()
+    {
+        return $this->hasManyThrough(
+            Game::class,
+            Week::class,
+            'year_id', // Foreign key on Week table...
+            'time_slot_id', // Foreign key on Game table...
+            'id', // Local key on Year table...
+            'id' // Local key on Week table...
+        );
+    }
 }

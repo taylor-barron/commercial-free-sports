@@ -147,9 +147,4 @@ class WeekController extends Controller
 
         return $this->show($year_object->year, $week_object->week);
     }
-
-    public function bestOfs()/*: \Inertia\Response*/
-    {
-        return 'this isn\'t done yet';
-    }
 }
