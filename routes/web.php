@@ -7,6 +7,7 @@ use App\Http\Controllers\Comments\CommentController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Users\ProfileController;
 use App\Http\Controllers\Users\UserController;
+use App\Http\Controllers\BestOfs\BestOfsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -41,7 +42,8 @@ Route::get('/all-weeks', [ WeekController::class, 'allWeeks' ])->name('all-weeks
 /**
  * Best Of routes
  */
-Route::get('/best-ofs', [ WeekController::class, 'bestOfs' ])->name('best-ofs');
+Route::get('/bestOfs', [ BestOfsController::class, 'allBestOfs' ])->name('best-ofs');
+Route::get('/bestOfs/{year}/{week?}', [ BestOfsController::class, 'show' ])->name('best-of.show');
 
 /**
  * Comment routes

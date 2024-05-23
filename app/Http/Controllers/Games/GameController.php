@@ -155,10 +155,10 @@ class GameController extends Controller
         return $game_info;
     }
 
-    public function sortGames($games)
+    public function sortGames($games, $key = 'overall_score')
     {
-        usort($games, function ($a, $b) {
-            return $b['overall_score'] <=> $a['overall_score'];
+        usort($games, function ($a, $b) use ($key) {
+            return $b[$key] <=> $a[$key];
         });
         
         $favorite_games = [];
