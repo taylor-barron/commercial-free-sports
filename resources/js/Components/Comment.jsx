@@ -3,7 +3,11 @@ import React from 'react';
 const Comment = ({ username, comment, timestamp, upvotes, userUpvoted, handleUpvote, downvotes, userDownvoted, handleDownvote }) => {
     return (
         <div className='w-full mb-2 flex flex-col'>
-            <p className='text-base'><span className='text-slate-500 text-xl'>{username}</span>: {comment}</p>
+
+            <p className='text-base'>
+                <span className='text-slate-500 text-xl'>{username}</span>: {comment}
+            </p>
+
             <div className='text-xs text-slate-300 flex flex-row justify-between'>
                 <div>{timestamp}</div>
                 <div className='flex flex-row'>

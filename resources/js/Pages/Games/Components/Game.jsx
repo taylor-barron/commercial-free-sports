@@ -4,18 +4,18 @@ import GameComments from './GameComments';
 
 const Game = ({ auth, game }) => {
 
-    const [isHidden, setIsHidden] = useState(game.favorite ? true : false);
+    const [isHidden, setIsHidden] = useState(true);
 
     const toggleGame = () => {
         setIsHidden(!isHidden);
     };
 
     return (
-        <div key={game.id} className="p-6 bg-white dark:bg-gray-800/20 text-gray-800 dark:text-gray-200 text-xl font-bold flex flex-row w-full mt-0 mb-0">
+        <div key={game.id} className="p-6 bg-white dark:bg-gray-800/20 text-gray-800 dark:text-gray-200 text-sm sm:text-xl font-bold flex flex-col sm:flex-row w-full mt-0 mb-0">
 
-            <div className='w-1/2'>
+            <div className='w-full sm:w-1/2 sm:mr-4'>
 
-                <div className="mx-4 flex justify-between rounded-t">
+                <div className="flex justify-between rounded-t">
                     <span style={{ background: `${game.away_color}` }} className="p-6 w-2/5 flex items-center justify-center rounded-tl">{ game.away_team }</span>
                     <span style={{ background: `linear-gradient(to right, ${game.away_color}, ${game.home_color})` }} className="p-6 w-1/5 flex items-center justify-center"></span>
                     <span style={{ background: `${game.home_color}` }} className="p-6 w-2/5 flex items-center justify-center rounded-tr">{ game.home_team }</span>
@@ -23,7 +23,7 @@ const Game = ({ auth, game }) => {
 
                 { !game.favorite ? (
             
-                    <div className="mx-4 flex flex-col justify-betwen bg-slate-700 bg-opacity-90 rounded-b">
+                    <div className="flex flex-wrap flex-col justify-betwen bg-slate-700 bg-opacity-90 rounded-b">
 
                         <div className='mx-4 p-4 flex flex-row justify-between'>
                             <span>Overall Score</span>
@@ -114,7 +114,7 @@ const Game = ({ auth, game }) => {
                         )
                     }
 
-                        <div className='mx-4 pt-0 pr-4 pb-4 pl-4 flex flex-row justify-center'>
+                        <div className='mt-4 sm:mt-0 p-4 sm:p-0 w-full sm:w-1/2'>
                             <Button
                                 text={isHidden ? "Show More" : "Show Less"}
                                 color="bg-black"
@@ -128,7 +128,7 @@ const Game = ({ auth, game }) => {
 
             </div>
 
-            <div className='w-1/2'>
+            <div className='mt-4 sm:mt-0 sm:ml-4 w-full sm:w-1/2'>
                 <GameComments auth={auth} game={game} />
             </div>
         </div>

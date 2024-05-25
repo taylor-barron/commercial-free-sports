@@ -33,7 +33,9 @@ export default forwardRef(function TextInput({ type = 'text', className = '', is
     return (
         <div className='flex flex-col text-right'>
 
-            <div className='text-xs mb-0.5'>{`${inputValue.length}/${maxCharLimit}`}</div>
+            <div className='text-xs mb-0.5'>
+                {`${inputValue.length}/${maxCharLimit}`}
+            </div>
 
             <div className='flex flex-row'>
                 <input
@@ -41,6 +43,11 @@ export default forwardRef(function TextInput({ type = 'text', className = '', is
                     type={type}
                     value={inputValue}
                     onChange={handleChange}
+                    onKeyDown={event => {
+                        if (event.key === 'Enter') {
+                            handleSubmit();
+                        }
+                    }}
                     className={
                         'w-full mr-2.5 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm ' +
                         className

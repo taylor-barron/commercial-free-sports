@@ -13,7 +13,7 @@ const TimeSlot = ({ auth, time_slot, scoreType }) => {
     return (
         <div key={time_slot.id} className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4">
 
-            <div className="p-6 bg-red-50 dark:bg-red-800/20 text-white text-2xl font-bold flex justify-between items-center">
+            <div className="p-6 bg-red-50 dark:bg-red-800/20 text-white text-s sm:text-2xl font-bold flex justify-between items-center">
 
                 <div>
                     { time_slot.time_slot } { time_slot.date }
