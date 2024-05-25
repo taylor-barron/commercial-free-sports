@@ -77,11 +77,11 @@ const GameComment = ({ auth, game }) => {
                 setIsLoading(false);
             });
 
-        setComment('');
+        setComments('');
     };
 
     return (
-        <div className='w-full h-full flex flex-col items-center justify-center'>
+        <div className='w-full h-full mt-8 sm:mt-0 flex flex-col items-center justify-center'>
             { !isHidden ? (
                     isLoading ? (
                         <div className='w-full h-4/5 flex flex-col items-center justify-center'>
@@ -90,28 +90,28 @@ const GameComment = ({ auth, game }) => {
                         </div>
                     ):(
                         <div className='w-full h-full flex flex-col'>
-                            <div className='overflow-auto flex-grow'>
-                            {comments.length > 0 ? (
-                                comments.map((comment) => (
-                                    <Comment
-                                        key={comment.id}
-                                        username={comment.username}
-                                        comment={comment.comment}
-                                        timestamp={comment.timestamp}
-                                        upvotes={comment.upvotes}
-                                        userUpvoted={comment.user_upvoted}
-                                        handleUpvote={() => handleUpvote(auth, comment.id)}
-                                        downvotes={comment.downvotes}
-                                        userDownvoted={comment.user_downvoted}
-                                        handleDownvote={() => handleDownvote(auth, comment.id)}
-                                    />
-                                ))
-                            ) : (
-                                <div className='w-full h-4/5 flex flex-col items-center justify-center'>
-                                    <img src={logo} alt="Logo" className="w-20 h-20" />
-                                    No comments yet...
-                                </div>
-                            )}
+                            <div className='overflow-auto h-full max-h-80 overflow-auto'>
+                                {comments.length > 0 ? (
+                                    comments.map((comment) => (
+                                        <Comment
+                                            key={comment.id}
+                                            username={comment.username}
+                                            comment={comment.comment}
+                                            timestamp={comment.timestamp}
+                                            upvotes={comment.upvotes}
+                                            userUpvoted={comment.user_upvoted}
+                                            handleUpvote={() => handleUpvote(auth, comment.id)}
+                                            downvotes={comment.downvotes}
+                                            userDownvoted={comment.user_downvoted}
+                                            handleDownvote={() => handleDownvote(auth, comment.id)}
+                                        />
+                                    ))
+                                ) : (
+                                    <div className='w-full h-4/5 flex flex-col items-center justify-center'>
+                                        <img src={logo} alt="Logo" className="w-20 h-20" />
+                                        No comments yet...
+                                    </div>
+                                )}
                             </div>
                             <div>
                                 {auth && (
@@ -131,12 +131,14 @@ const GameComment = ({ auth, game }) => {
             }
 
             { isHidden && (
-                <Button
-                    text={isHidden ? "Show Comments" : "Hide"}
-                    color="bg-black"
-                    opacity="0.8"
-                    action={() => toggleComments(game)}
-                />
+                <div className='m-8 sm:m-0'>
+                    <Button
+                        text={isHidden ? "Show Comments" : "Hide"}
+                        color="bg-black"
+                        opacity="0.8"
+                        action={() => toggleComments(game)}
+                    />
+                </div>
             )}
         </div>
     );

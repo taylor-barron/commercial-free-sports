@@ -29,7 +29,7 @@ export default function Year({ year }) {
 
             {!isHidden && (
                 <div className="flex flex-row justify-between">
-                    <div className="flex flex-row w-1/8">
+                    <div className="flex flex-row w-1/8 flex-wrap">
                         {year.weeks.map((week) => (
                             <Week key={week.id} week={week} />
                         ))}

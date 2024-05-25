@@ -3,6 +3,7 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import DefaultHead from '@/Components/DefaultHead';
 import CommonLinks from '@/Layouts/CommonLinks';
+import CommonMobileLinks from './CommonMobileLinks';
 
 export default function Guest({ header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -49,18 +50,14 @@ export default function Guest({ header, children }) {
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('home')} active={route().current('home')}>
-                            Home
-                        </ResponsiveNavLink>
+                        
+                        <CommonMobileLinks />
+                        
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-                        <div className="px-4">
-                            <div className="font-medium text-base text-gray-800 dark:text-gray-200">name?</div>
-                            <div className="font-medium text-sm text-gray-500">email?</div>
-                        </div>
 
-                        <div className="mt-3 space-y-1">
+                        <div className="mr-4 ml-4 mb-4 space-y-1">
                             <Link href='/login' className="text-gray-200">
                                 Log In
                             </Link>
