@@ -7,22 +7,31 @@ export default function HowItWorksContent({ user }) {
                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
 
                     <div className="p-6 bg-red-50 dark:bg-red-800/20 text-white text-2xl font-bold">
+                        How It Started
+                    </div>
+
+                    <div className="p-6 text-gray-900 dark:text-gray-100">
+                        Hi, I'm Taylor 👋. I have always loved college football and weekends. In fact, I have always tried to maximize 
+                        both. No Commercials Pro was built to show you the most enjoyable games to watch to maximize your football viewing 
+                        experience and your weekend. By avoiding social media and tv screens through Saturday afternoon one is able to 
+                        achieve both an excellent Saturday AND watch several awesome games in just a few hours. This website is dedicated to 
+                        helping others make that happen.
+                    </div>
+
+                    <div className="p-6 text-gray-900 dark:text-gray-100">
+                        Skip Commercials Pro uses an alogrithm that is able to rate the awesomeness of a football game and rank them per TV 
+                        time slot WITHOUT spoiling anything about the game. What does that mean for you? It means that you can do whatever you love 
+                        the morning and afternoon Saturday and then watch the four best games of the day back to back without sitting through a single 
+                        commercial break. Oh, you're sick of the Burger King commercial? I haven't seen it. And I won't. 
+                    </div>
+
+                    <div className="p-6 text-gray-900 dark:text-gray-100">
+                        By the way if you can't/don't want to live the commercial free lifestyle for whatever reason and just want to see the algorithmetically 
+                        selected best games of the week you're also covered. Here's one more list to look through during the week. 
+                    </div>
+
+                    <div className="p-6 bg-red-50 dark:bg-red-800/20 text-white text-2xl font-bold">
                         How It Works
-                    </div>
-
-                    <div className="p-6 text-gray-900 dark:text-gray-100">
-                        This web application is designed to rate football games that are live or have already been played in order to 
-                        help the user determine which games will be most entertaining to watch.
-                    </div>
-
-                    <div className="p-6 text-gray-900 dark:text-gray-100">
-                        The idea for this comes from the difficulty in enjoying a late summer to early winter Saturday in the best way possible. 
-                        My entire life I have wanted to watch the best college footbal games that are played AND I want to do other things. Whether 
-                        those other things are family, friends, work, the yard, golf, intramurals, boating, hiking, or whatever else you like that 
-                        I don't, all college football fans have something that they would rather be doing/get done instead of watching commercials 
-                        all day. This app allows you to record every college football game and let the app tell you which games to watch without 
-                        telling you anything about it. This app takes the risk out of recording and gives back hours of your Saturdays from watching 
-                        ads.
                     </div>
 
                     <div className="p-6 text-gray-900 dark:text-gray-100">
@@ -35,7 +44,7 @@ export default function HowItWorksContent({ user }) {
                         The second part is the importance of the game. This is generated very simply, currently. If the team has played less than 
                         ten games then this score factors in historical record. The historical record accounts for the percentage of games less than 
                         ten. (EX: For a team that has played five games historical record factors in 50%.) If the team has played ten games then the 
-                        importance for each team is the win/loss percentage. These are added together and divided by two.
+                        importance for each team is the win/loss percentage. These are added together and divided by two (There's two teams).
                     </div>
 
                     <div className="p-6 text-gray-900 dark:text-gray-100">
@@ -45,19 +54,19 @@ export default function HowItWorksContent({ user }) {
                     </div>
 
                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                        The fourth rating is the talent composite score of the two teams. All things being equal, great athletes 
-                        make great games. The more talent on the field, the better. This rating is pulled from College Football API 
-                        and not modified very much.
+                        The fourth rating is the talent composite score of the two teams. All things being equal, great athletes usually 
+                        make great games. The more talent on the field, the better. This rating is pulled from College Football API that tracks overall 
+                        team talent and not modified very much.
                     </div>
 
                     <div className="p-6 text-gray-900 dark:text-gray-100">
                         The final and least important rating is for how many penalties occur in the game. This should be weighted the least heavily 
-                        but all things being equal games are much better when they are not a ref show.
+                        but if I have to choose between no penalties and lots of penalties the choice is pretty easy.
                     </div>
 
                     <div className="p-6 text-gray-900 dark:text-gray-100">
                         These ratings are weighted and added together to form a total composite ranking which is displayed in ranked order within the 
-                        web application.
+                        web application. If you make a profile you can weight the scores however you want.
                     </div>
                 </div>
             </div>

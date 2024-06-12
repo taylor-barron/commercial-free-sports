@@ -2,8 +2,9 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GuestLayout from '@/Layouts/GuestLayout';
 import Year from './Year';
 import Announcement from '@/Components/Announcement';
+import { Head } from '@inertiajs/react';
 
-export default function AllWeeks({ auth, years }) {
+export default function AllWeeks({ auth, years, head }) {
 
     if (auth.user) {
         return (
@@ -12,6 +13,8 @@ export default function AllWeeks({ auth, years }) {
                 user={auth.user}
                 header='All Weeks'
             >
+                <Head title={head} />
+                
                 <Announcement
                     text="You're logged in!"
                 />
@@ -29,6 +32,8 @@ export default function AllWeeks({ auth, years }) {
     } else return (
         
         <GuestLayout>
+
+            <Head title={head} />
 
             <Announcement
                 text="You're not logged in!"

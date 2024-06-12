@@ -1,8 +1,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GuestLayout from '@/Layouts/GuestLayout';
 import BestOfsContent from './BestOfsContent';
+import { Head } from '@inertiajs/react';
 
-export default function BestOfs({ auth, games }) {
+export default function BestOfs({ auth, games, head }) {
 
     if (auth.user) {
         return (
@@ -11,6 +12,8 @@ export default function BestOfs({ auth, games }) {
                 user={auth.user}
                 header='Current Week Games'
             >
+
+                <Head title={head} />
 
                 <BestOfsContent
                     user={auth.user}
@@ -22,6 +25,8 @@ export default function BestOfs({ auth, games }) {
     } else return (
         
         <GuestLayout>
+
+            <Head title={head} />
 
             <BestOfsContent
                 header='Current Week Games'

@@ -52,10 +52,11 @@ class WeekController extends Controller
                 'edit_url' => route('profile.edit', $user),
             ] : null,
             'years' => $years_info,
+            'head' => 'All Weeks'
         ]);
     }
 
-    public function show($year, $week): \Inertia\Response
+    public function show($year, $week, $head = null): \Inertia\Response
     {
         $game_controller = new GameController();
         $user = Auth::user();
@@ -107,6 +108,13 @@ class WeekController extends Controller
             $games['time_slots'][$time_slot_last_key]['games']['default'] = $game_controller->sortGames($games['time_slots'][$time_slot_last_key]['games']['default']);
         }
 
+        if (!$head) {
+
+            $week_str = $games['week'];
+            $year_str = $year_object->year;
+            $head = "Week $week_str, $year_str";
+        }
+
         return Inertia::render('Games/CurrentWeek', [
             'user' => $user ? [
 
@@ -116,6 +124,7 @@ class WeekController extends Controller
                 'edit_url' => route('profile.edit', $user),
             ] : null,
             'games' => $games,
+            'head' => $head
         ]);
     }
 
@@ -145,6 +154,6 @@ class WeekController extends Controller
             ->first();
         }
 
-        return $this->show($year_object->year, $week_object->week);
+        return $this->show($year_object->year, $week_object->week, 'This Week');
     }
 }

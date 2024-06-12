@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GuestLayout from '@/Layouts/GuestLayout';
-import HomeContent from '@/PageContent/HomeContent';
+import HomeContent from '@/Pages/Home/HomeContent';
 import { Head } from '@inertiajs/react';
 
 export default function Dashboard({ auth }) {
