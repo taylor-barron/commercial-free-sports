@@ -4,7 +4,7 @@ const Toggle = ({ checkedText, uncheckedText, checkedColor, uncheckedColor, isCh
     return (
         <label className={`autoSaverSwitch relative inline-flex cursor-pointer select-none items-center`}>
 
-            <span className='label flex items-center pr-6 text-gray-900 dark:text-gray-100'>
+            <span className='label flex items-center pr-6 text-gray-900 dark:text-gray-100 lg:block hidden'>
                 {isChecked ? checkedText : uncheckedText}
             </span>
             

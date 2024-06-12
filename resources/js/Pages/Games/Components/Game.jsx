@@ -70,7 +70,7 @@ const Game = ({ auth, game }) => {
 
                     </div>
                 ):(
-                    <div style={{ background: `${game.favorite_color}` }} className="mx-4 flex flex-col justify-betwen rounded-b">
+                    <div style={{ background: `${game.favorite_color}` }} className="flex flex-wrap flex-col justify-between rounded-b">
 
                         { !isHidden ? (
 
@@ -111,10 +111,9 @@ const Game = ({ auth, game }) => {
                             <div className='mx-4 p-4 flex flex-row justify-center'>
                                 <span>All Spoilers Hidden</span>
                             </div>
-                        )
-                    }
+                        )}
 
-                        <div className='mt-4 sm:mt-0 p-4 sm:p-0 w-full sm:w-1/2'>
+                        <div className='mx-4 p-4 flex flex-row justify-center'>
                             <Button
                                 text={isHidden ? "Show More" : "Show Less"}
                                 color="bg-black"
@@ -128,7 +127,7 @@ const Game = ({ auth, game }) => {
 
             </div>
 
-            <div className='mt-4 sm:mt-0 sm:ml-4 w-full sm:w-1/2'>
+            <div className='mt-4 mb-4 sm:mt-0 sm:ml-4 w-full sm:w-1/2'>
                 <GameComments auth={auth} game={game} />
             </div>
         </div>

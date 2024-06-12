@@ -111,13 +111,11 @@ class GameController extends Controller
 
                 $game_info['favorite'] = true;
                 $game_info['favorite_color'] = $game['home_color'];
-                break;
 
             } else if ($team['name'] == $away_team) {
 
                 $game_info['favorite'] = true;
                 $game_info['favorite_color'] = $game['away_color'];
-                break;
             }
         }
         return $game_info;

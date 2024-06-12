@@ -60,6 +60,7 @@ class BestOfsController extends Controller
                 'edit_url' => route('profile.edit', $user),
             ] : null,
             'years' => $years_info,
+            'head' => 'Best Ofs'
         ]);
     }
 
@@ -153,12 +154,15 @@ class BestOfsController extends Controller
 
             $week = $week_object->week;
             $date_string = 'Week ' . (string) $week_object->week .', '. (string) $year_object->year;
+            $head = "Best of $date_string";
             $games['week'] = $week_object->week;
 
         } else {
 
             $week = null;
             $date_string = 'All Weeks, '. (string) $year_object->year;
+            $head_string = (string) $year_object->year;
+            $head = "Best of $head_string";
             $games['week'] = null;
         }
         
@@ -240,6 +244,7 @@ class BestOfsController extends Controller
                 'edit_url' => route('profile.edit', $user),
             ] : null,
             'games' => $games,
+            'head' => $head
         ]);
     }
 
