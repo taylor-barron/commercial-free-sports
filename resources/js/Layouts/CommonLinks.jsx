@@ -15,23 +15,23 @@ export default function CommonLinks() {
 
             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
 
-                <NavLink href={route('home')} active={route().current('home')}>
+                <NavLink href="/" active={route().current('home')}>
                     Home
                 </NavLink>
 
-                <NavLink href={route('next-week')} active={route().current('next-week')}>
+                <NavLink href="/next-week" active={route().current('next-week')}>
                     Next Week
                 </NavLink>
 
-                <NavLink href={route('this-week')} active={route().current('this-week')}>
+                <NavLink href='/this-week' active={route().current('this-week')}>
                     This Week
                 </NavLink>
 
-                <NavLink href={route('all-weeks')} active={route().current('all-weeks')}>
+                <NavLink href='/all-weeks' active={route().current('all-weeks')}>
                     All Weeks
                 </NavLink>
 
-                <NavLink href={route('best-ofs')} active={route().current('best-ofs')}>
+                <NavLink href='/bestOfs' active={route().current('best-ofs')}>
                     Best Ofs
                 </NavLink>
             </div>
