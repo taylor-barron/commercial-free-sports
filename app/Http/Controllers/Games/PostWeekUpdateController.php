@@ -19,6 +19,8 @@ class PostWeekUpdateController extends Controller
     {
         try {
 
+            // need to make sure that bowl games that go over to the new year stay in the correct year
+
             $request_year = $request->year;
             $year = Year::where('year', $request_year)->first();
             if (!$year) {
