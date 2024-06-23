@@ -35,6 +35,13 @@ class BestOfsController extends Controller
                     'link' => route('best-of.show', [ 'year' => $year->year, 'week' => $week->week ]),
                 ];
             }
+            
+            $weeks_info = collect($weeks_info)->sortBy('week')->values()->all();
+            foreach ($weeks_info as $key => $week_info) {
+                if ($week_info['week'] == 16) {
+                    $weeks_info[$key]['week'] = 'BOWLS';
+                }
+            }
 
             $weeks_info[] = [
 
