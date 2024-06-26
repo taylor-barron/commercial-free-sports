@@ -2,6 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GuestLayout from '@/Layouts/GuestLayout';
 import BestOfsContent from './BestOfsContent';
 import { Head } from '@inertiajs/react';
+import ScrollUpArrow from '@/Components/ScrollUpArrow';
 
 export default function BestOfs({ auth, games, head }) {
 
@@ -20,6 +21,8 @@ export default function BestOfs({ auth, games, head }) {
                     games={games}
                 />
 
+                <ScrollUpArrow />
+
             </AuthenticatedLayout>
         );
     } else return (
@@ -32,6 +35,8 @@ export default function BestOfs({ auth, games, head }) {
                 header='Current Week Games'
                 games={games}
             />
+
+            <ScrollUpArrow />
 
         </GuestLayout>
     );
