@@ -9,6 +9,10 @@ class Week extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'week' => 'integer',
+    ];
+
     public function getYear()
     {
         return $this->belongsTo(Year::class);
