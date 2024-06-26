@@ -87,7 +87,11 @@ class BestOfsController extends Controller
         } else {
 
             $week_object = null;
-            $games = $year_object->games;
+            $games = collect([]);
+            $all_weeks_objects = Week::where('year_id', $year_object->id)->get();
+            foreach ($all_weeks_objects as $all_week_object) {
+                $games = $games->merge($all_week_object->games);
+            }
         }
 
         $top_overall_games = [];
@@ -101,12 +105,14 @@ class BestOfsController extends Controller
             $overall_score = $game_controller->calculateDefaultOverallScore($game);
             $game_info = $game_controller->getDefaultGameInfo($game, [], $overall_score);
 
-            if (count($top_overall_games) < 5) {
+            if (count($top_overall_games) < 20) { // Change from 5 to 20
                 $top_overall_games[] = $game_info;
             } else {
                 $top_overall_games = $game_controller->sortGames($top_overall_games);
-                if ($game_info['overall_score'] > $top_overall_games[4]['overall_score']) {
-                    $top_overall_games[4] = $game_info;
+                if ($game_info['overall_score'] > $top_overall_games[19]['overall_score']) { // Change index from 4 to 19
+                    array_pop($top_overall_games); // Remove the last game
+                    $top_overall_games[] = $game_info; // Add the new game
+                    $top_overall_games = $game_controller->sortGames($top_overall_games); // Re-sort the array
                 }
             }
 

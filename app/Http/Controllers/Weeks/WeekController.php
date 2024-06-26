@@ -143,23 +143,23 @@ class WeekController extends Controller
 
     public function thisWeek(): \Inertia\Response
     {
-        $year_object = Year::where('year', Year::max('year'))->first();
+        $year_object = Year::orderBy('year', 'desc')->first();
         $week_object = Week::where('year_id', $year_object->id)
             ->whereHas('games', function ($query) {
                 $query->whereNotNull('score_score');
             })
-            ->orderBy('week', 'desc')
+            ->orderByRaw('CAST(week AS UNSIGNED) DESC')
             ->first();
 
         if (!$week_object) {
 
-            $year_object = Year::where('year', Year::max('year') - 1)->first();
+            $year_object = Year::where('year', $year_object->year - 1)->first();
             $week_object = Week::where('year_id', $year_object->id)
-            ->whereHas('games', function ($query) {
-                $query->whereNotNull('score_score');
-            })
-            ->orderBy('week', 'desc')
-            ->first();
+                ->whereHas('games', function ($query) {
+                    $query->whereNotNull('score_score');
+                })
+                ->orderByRaw('CAST(week AS UNSIGNED) DESC')
+                ->first();
         }
 
         return $this->show($year_object->year, $week_object->week, 'This Week');
