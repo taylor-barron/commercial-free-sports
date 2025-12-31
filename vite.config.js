@@ -10,16 +10,16 @@ export default defineConfig({
         }),
         react(),
     ],
-    build: {
-        manifest: true,
-        outDir: 'public/build',
-    },
+
     server: {
         cors: true,
+        https: true,
         host: process.env.APP_PUBLIC_IP,
-        public: `http://${process.env.APP_PUBLIC_IP}`,
+        public: `https://${process.env.APP_PUBLIC_IP}`,
         hmr: {
             host: process.env.APP_PUBLIC_IP,
         },
     },
+
+    base: '/build',
 });
