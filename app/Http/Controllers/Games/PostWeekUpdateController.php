@@ -15,16 +15,12 @@ use Carbon;
 
 class PostWeekUpdateController extends Controller
 {
-    public function update(Request $request)
+    public function update(Request $request): array
     {
         try {
-
-            // need to make sure that bowl games that go over to the new year stay in the correct year
-
             $request_year = $request->year;
             $year = Year::where('year', $request_year)->first();
             if (!$year) {
-
                 $year = new Year();
                 $year->year = $request->year;
                 $year->save();
@@ -33,7 +29,6 @@ class PostWeekUpdateController extends Controller
             $request_week = $request->week;
             $week = $year->weeks()->where('week', $request_week)->first();
             if (!$week) {
-
                 $week = new Week();
                 $week->week = $request->week;
                 $week->year_id = $year->id;
@@ -46,7 +41,6 @@ class PostWeekUpdateController extends Controller
             ->whereDate('date', $date->toDateString())
             ->first();
             if (!$time_slot) {
-
                 $time_slot = new TimeSlot();
                 $time_slot->timeslot = $request->timeSlot;
                 $time_slot->date = $date;
@@ -59,33 +53,31 @@ class PostWeekUpdateController extends Controller
                 ->where('away_team', $request->awayTeam)
                 ->first();
             if (!$game) {
-
                 $game = new Game();
-
-                $hours = floor($request->startTime);
-                $minutes = ($request->startTime - $hours) * 60;
-
-                $game->start_time = Carbon\Carbon::today()
-                    ->setTimezone('EST')
-                    ->setTime($hours, $minutes)
-                    ->toDateTimeString();
-
-                $game->home_team = $request->homeTeam;
-                $game->home_color = $request->homeColor;
-                $game->away_team = $request->awayTeam;
-                $game->away_color = $request->awayColor;
-                $game->time_slot_id = $time_slot->id;
-                $game->quarter = $request->quarter;
-                $game->score_score = $request->scoreScore;
-                $game->importance_score = $request->importanceScore;
-                $game->explosiveness_score = $request->explosivenessScore;
-                $game->talent_score = $request->talentScore;
-                $game->penalty_score = $request->penaltyScore;
             }
 
+            $hours = floor($request->startTime);
+            $minutes = ($request->startTime - $hours) * 60;
+
+            $game->start_time = Carbon\Carbon::today()
+                ->setTimezone('EST')
+                ->setTime($hours, $minutes)
+                ->toDateTimeString();
+
+            $game->home_team = $request->homeTeam;
+            $game->home_color = $request->homeColor;
+            $game->away_team = $request->awayTeam;
+            $game->away_color = $request->awayColor;
+            $game->time_slot_id = $time_slot->id;
+            $game->quarter = $request->quarter;
+            $game->score_score = $request->scoreScore;
+            $game->importance_score = $request->importanceScore;
+            $game->explosiveness_score = $request->explosivenessScore;
+            $game->talent_score = $request->talentScore;
+            $game->penalty_score = $request->penaltyScore;
+            
             $home_team = Team::where('name', $request->homeTeam)->first();
             if (!$home_team) {
-
                 $home_team = new Team();
                 $home_team->name = $request->homeTeam ? $request->homeTeam : 'Division 2 Team';
                 $home_team->color = $request->homeColor ? $request->homeColor : '#010101';
@@ -94,7 +86,6 @@ class PostWeekUpdateController extends Controller
 
             $away_team = Team::where('name', $request->awayTeam)->first();
             if (!$away_team) {
-
                 $away_team = new Team();
                 $away_team->name = $request->awayTeam ? $request->awayTeam : 'Division 2 Team';
                 $away_team->color = $request->awayColor ? $request->awayColor : '#010101';
@@ -104,7 +95,6 @@ class PostWeekUpdateController extends Controller
             $game->save();
 
             return [
-                
                 'code' => 200,
                 'game_id' => $game->id,
                 'time_slot_id' => $time_slot->id,
@@ -113,9 +103,7 @@ class PostWeekUpdateController extends Controller
             ];
 
         } catch (\Exception $e) {
-
             return [
-                
                 'code' => 500,
                 'error' => $e->getMessage()
             ];
