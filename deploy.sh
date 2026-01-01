@@ -17,7 +17,6 @@ echo "🐳 Starting containers..."
 
 echo "📦 Installing PHP dependencies..."
 ./vendor/bin/sail composer install \
-  --no-dev \
   --prefer-dist \
   --optimize-autoloader
 
