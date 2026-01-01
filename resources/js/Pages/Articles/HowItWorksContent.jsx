@@ -7,7 +7,7 @@ export default function HowItWorksContent({ user }) {
                 <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
 
                     <div className="p-6 bg-red-50 dark:bg-red-800/20 text-white text-2xl font-bold">
-                        How It Started?
+                        How It Started
                     </div>
 
                     <div className="p-6 text-gray-900 dark:text-gray-100">
