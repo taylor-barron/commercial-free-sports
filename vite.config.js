@@ -12,12 +12,12 @@ export default defineConfig({
     ],
 
     server: {
+        host: '0.0.0.0',
+        port: 5173,
+        https: false,
         cors: true,
-        https: true,
-        host: process.env.APP_PUBLIC_IP,
-        public: `https://${process.env.APP_PUBLIC_IP}`,
         hmr: {
-            host: process.env.APP_PUBLIC_IP,
+            host: 'localhost',
         },
     },
 
