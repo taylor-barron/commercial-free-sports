@@ -12,20 +12,19 @@ class GameController extends Controller
         $favorite_team_objects = $profile->teams()->get();
         foreach($favorite_team_objects as $team) {
             $favorite_teams[] = [
-
                 'id' => $team->id,
                 'name' => $team->name,
             ];
         }
+
         return $favorite_teams;
     }
 
     public function getCustomWeights($profile)
     {
-        $custom_weights = [];
+        $weights = [];
         if ($profile->score_score) {
-            $custom_weights = [
-
+            $weights = [
                 'custom_score_score_weight' => $profile->score_score,
                 'custom_importance_score_weight' => $profile->importance_score,
                 'custom_explosiveness_score_weight' => $profile->explosiveness_score,
@@ -33,47 +32,46 @@ class GameController extends Controller
                 'custom_penalty_score_weight' => $profile->penalty_score,
             ];
         } else {
-            $custom_weights = [
-
-                'custom_score_score_weight' => env('SCORE_SCORE_WEIGHT') * 100,
-                'custom_importance_score_weight' => env('IMPORTANCE_SCORE_WEIGHT') * 100,
-                'custom_explosiveness_score_weight' => env('EXPLOSIVENESS_SCORE_WEIGHT') * 100,
-                'custom_talent_score_weight' => env('TALENT_SCORE_WEIGHT') * 100,
-                'custom_penalty_score_weight' => env('PENALTY_SCORE_WEIGHT') * 100,
+            $weights = [
+                'custom_score_score_weight' => env('SCORE_SCORE_WEIGHT') ? env('SCORE_SCORE_WEIGHT') * 100 : 35,
+                'custom_importance_score_weight' => env('IMPORTANCE_SCORE_WEIGHT') ? env('IMPORTANCE_SCORE_WEIGHT') * 100 : 25,
+                'custom_explosiveness_score_weight' => env('EXPLOSIVENESS_SCORE_WEIGHT') ? env('EXPLOSIVENESS_SCORE_WEIGHT') * 100 : 25,
+                'custom_talent_score_weight' => env('TALENT_SCORE_WEIGHT') ? env('TALENT_SCORE_WEIGHT') * 100 : 10,
+                'custom_penalty_score_weight' => env('PENALTY_SCORE_WEIGHT') ? env('PENALTY_SCORE_WEIGHT') * 100 : 5,
             ];
         }
-        return $custom_weights;
+
+        return $weights;
     }
 
     public function getTimeSlotsInfo($time_slot)
     {
         $time_slot = [
-
             'id' => $time_slot->id,
             'time_slot' => $time_slot->timeslot,
             'date' => date('F d, Y', strtotime($time_slot->date)),
             'games' => [],
         ];
+
         return $time_slot;
     }
 
     public function calculateDefaultOverallScore($game)
     {
         $default_overall_score = round(
-
-            (env('SCORE_SCORE_WEIGHT') * $game->score_score) +
-            (env('IMPORTANCE_SCORE_WEIGHT') * $game->importance_score) +
-            (env('EXPLOSIVENESS_SCORE_WEIGHT') * $game->explosiveness_score) +
-            (env('TALENT_SCORE_WEIGHT') * $game->talent_score) + 
-            (env('PENALTY_SCORE_WEIGHT') * $game->penalty_score)
+            (env('SCORE_SCORE_WEIGHT') ? env('SCORE_SCORE_WEIGHT') * $game->score_score : .35 * $game->score_score) +
+            (env('IMPORTANCE_SCORE_WEIGHT') ? env('IMPORTANCE_SCORE_WEIGHT') * $game->importance_score : .25 * $game->importance_score) +
+            (env('EXPLOSIVENESS_SCORE_WEIGHT') ? env('EXPLOSIVENESS_SCORE_WEIGHT') * $game->explosiveness_score : .25 * $game->explosiveness_score) +
+            (env('TALENT_SCORE_WEIGHT') ? env('TALENT_SCORE_WEIGHT') * $game->talent_score : .10 * $game->talent_score) +
+            (env('PENALTY_SCORE_WEIGHT') ? env('PENALTY_SCORE_WEIGHT') * $game->penalty_score : .05 * $game->penalty_score)
         );
+
         return $default_overall_score;
     }
 
     public function calculateCustomOverallScore($game, $custom_weights)
     {
         $custom_overall_score = round(
-
             (($custom_weights['custom_score_score_weight'] * $game->score_score) +
             ($custom_weights['custom_importance_score_weight'] * $game->importance_score) +
             ($custom_weights['custom_explosiveness_score_weight'] * $game->explosiveness_score) +
@@ -81,6 +79,7 @@ class GameController extends Controller
             ($custom_weights['custom_penalty_score_weight'] * $game->penalty_score))
             / 100
         );
+
         return $custom_overall_score;
     }
 
@@ -89,7 +88,6 @@ class GameController extends Controller
         $away_team = $game->away_team;
         $home_team = $game->home_team;
         $game_info = [
-
             'id' => $game->id,
             'favorite' => false,
             'quarter' => $game->quarter,
@@ -108,16 +106,15 @@ class GameController extends Controller
 
         foreach ($favorite_teams as $team) {
             if ($team['name'] == $home_team) {
-
                 $game_info['favorite'] = true;
                 $game_info['favorite_color'] = $game['home_color'];
 
-            } else if ($team['name'] == $away_team) {
-
+            } elseif ($team['name'] == $away_team) {
                 $game_info['favorite'] = true;
                 $game_info['favorite_color'] = $game['away_color'];
             }
         }
+
         return $game_info;
     }
 
@@ -126,7 +123,6 @@ class GameController extends Controller
         $away_team = $game->away_team;
         $home_team = $game->home_team;
         $game_info = [
-
             'id' => $game->id,
             'favorite' => false,
             'quarter' => $game->quarter,
@@ -145,11 +141,11 @@ class GameController extends Controller
 
         foreach ($favorite_teams as $team) {
             if ($team['name'] == $home_team || $team['name'] == $away_team) {
-
                 $game_info['favorite'] = true;
                 break;
             }
         }
+
         return $game_info;
     }
 
@@ -162,7 +158,6 @@ class GameController extends Controller
         $favorite_games = [];
         $non_favorite_games = [];
         foreach ($games as $game) {
-            
             if ($game['favorite']) {
                 $favorite_games[] = $game;
             } else {
