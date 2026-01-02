@@ -22,9 +22,10 @@ export default function HowItWorksContent({ user }) {
                     </div>
 
                     <div className="p-6 text-gray-900 dark:text-gray-100">
-                        The second part is the importance of the game. This is generated very simply by looking at historical record over the last
-                        few years (early in the season) and later by looking at the teams record for the year once more games have been played. After the
-                        year is over this rating is finalized with end of year results.
+                        The second part is the importance of the game. The goal is to rate the game by how well the two teams are doing. This is
+                        generated very simply by looking at historical record over the last few years (early in the season) and later by looking at
+                        the teams record for the year once more games have been played. After the year is over this rating is finalized with end of
+                        year results.
                     </div>
 
                     <div className="p-6 text-gray-900 dark:text-gray-100">
