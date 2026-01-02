@@ -24,28 +24,18 @@ class WeekController extends Controller
 
         $years_info = [];
         foreach ($years as $year) {
-
             $weeks = Week::where('year_id', $year->id)->get();
             $weeks_info = [];
             foreach ($weeks as $week) {
                 $weeks_info[] = [
-                    
                     'id' => $week->id,
                     'week' => $week->week,
                     'link' => route('week.show', [ 'year' => $year->year, 'week' => $week->week ]),
                 ];
             }
             
-            $weeks_info = collect($weeks_info)->sortBy('week')->values()->all();
-            foreach ($weeks_info as $key => $week_info) {
-                if ($week_info['week'] == 16) {
-                    $weeks_info[$key]['week'] = 'BOWLS';
-                }
-            }
-            
             $years_info[] = [
-
-                'weeks' => $weeks_info,
+                'weeks' => collect($weeks_info)->sortBy('week')->values()->all(),
                 'year' => $year->year,
                 'id' => $year->id,
             ];
@@ -53,7 +43,6 @@ class WeekController extends Controller
 
         return Inertia::render('Weeks/AllWeeks', [
             'user' => $user ? [
-
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
@@ -72,7 +61,6 @@ class WeekController extends Controller
         $favorite_teams = [];
         $custom_weights = [];
         if ($user) {
-
             $profile = $user->profile;
             $favorite_teams = $game_controller->getFavoriteTeams($profile);
             $custom_weights = $game_controller->getCustomWeights($profile);
@@ -89,18 +77,15 @@ class WeekController extends Controller
 
         $time_slots = TimeSlot::where('week_id', $week_object->id)->get();
         foreach ($time_slots as $time_slot) {
-
             $games['time_slots'][] = $game_controller->getTimeSlotsInfo($time_slot);
 
             $games_for_time_slot_objects = Game::where('time_slot_id', $time_slot->id)->get();
             $games_last_key = 0;
             foreach ($games_for_time_slot_objects as $game) {
-
                 $time_slot_last_key = array_key_last($games['time_slots']);
                 $default_overall_score = $game_controller->calculateDefaultOverallScore($game);
 
                 if ($user) {
-
                     $custom_overall_score = null;
                     $custom_overall_score = $game_controller->calculateCustomOverallScore($game, $custom_weights);
                     $games['time_slots'][$time_slot_last_key]['games']['custom'][$games_last_key] = $game_controller->getCustomGameInfo($game, $favorite_teams, $custom_overall_score);
@@ -117,7 +102,6 @@ class WeekController extends Controller
         }
 
         if (!$head) {
-
             $week_str = $games['week'];
             $year_str = $year_object->year;
             $head = "Week $week_str, $year_str";
@@ -125,7 +109,6 @@ class WeekController extends Controller
 
         return Inertia::render('Games/CurrentWeek', [
             'user' => $user ? [
-
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
@@ -152,7 +135,6 @@ class WeekController extends Controller
             ->first();
 
         if (!$week_object) {
-
             $year_object = Year::where('year', $year_object->year - 1)->first();
             $week_object = Week::where('year_id', $year_object->id)
                 ->whereHas('games', function ($query) {
