@@ -19,9 +19,9 @@ export default function CommonLinks() {
                     Home
                 </NavLink>
 
-                <NavLink href="/next-week" active={route().current('next-week')}>
+                {/* <NavLink href="/next-week" active={route().current('next-week')}>
                     Next Week
-                </NavLink>
+                </NavLink> */}
 
                 <NavLink href='/this-week' active={route().current('this-week')}>
                     This Week

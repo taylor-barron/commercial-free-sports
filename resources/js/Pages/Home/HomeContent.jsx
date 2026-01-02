@@ -22,7 +22,7 @@ export default function HomeContent({ user }) {
                     <h2 className="mt-6 text-xl font-semibold text-gray-900 dark:text-white">Last Week</h2>
 
                     <p className="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
-                      Find the best games to watch this week. Games are ranked by how entertaining they are to watch so that you can watch the best games AND skip the commercials.
+                      See the rankings for the most exciting college football games played in the last week where football was played.
                     </p>
                 </div>
 
@@ -42,7 +42,7 @@ export default function HomeContent({ user }) {
                     <h2 className="mt-6 text-xl font-semibold text-gray-900 dark:text-white">Previous Weeks</h2>
 
                     <p className="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
-                      Select any previous week to see the best games from that week. When games are not running more previous weeks and years are added so long as data is consistent and available.
+                      Select any previous week to see the best games from that week. When games are not running more previous weeks and years will be added so long as data is consistent and available.
                     </p>
                 </div>
 
@@ -64,7 +64,7 @@ export default function HomeContent({ user }) {
                             <h2 className="mt-6 text-xl font-semibold text-gray-900 dark:text-white">{user.name}'s Profile</h2>
 
                             <p className="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
-                            Hide game ratings for your favorite teams so that nothing ruins your viewing experience. Customize game ratings based on your preferences. Alerts for when your the start of your team's game is pushed to another channel coming soon.
+                              Hide game ratings for your favorite teams so that nothing ruins your viewing experience. Customize game ratings based on your preferences.
                             </p>
                         </div>
                     ) : (
@@ -72,7 +72,7 @@ export default function HomeContent({ user }) {
                             <h2 className="mt-6 text-xl font-semibold text-gray-900 dark:text-white">Sign Up</h2>
 
                             <p className="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
-                            Sign up to customize game ratings to your preferences and watch the games that you'll enjoy the most. Select your favorite teams to hide their game ratings so that nothing ruins your viewing experience. Alerts for when your the start of your team's game is pushed to another channel coming soon.
+                              Sign up to customize game ratings to your preferences and hide games for your favorite teams.
                             </p>
                         </div>
                     )}

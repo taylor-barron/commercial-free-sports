@@ -12,9 +12,9 @@ export default function CommonMobileLinks() {
                 Home
             </ResponsiveNavLink>
 
-            <ResponsiveNavLink href='/next-week' active={route().current('next-week')}>
+            {/* <ResponsiveNavLink href='/next-week' active={route().current('next-week')}>
                 Next Week
-            </ResponsiveNavLink>
+            </ResponsiveNavLink> */}
 
             <ResponsiveNavLink href='/this-week' active={route().current('this-week')}>
                 This Week
