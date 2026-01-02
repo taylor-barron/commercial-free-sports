@@ -62,6 +62,7 @@ export default function HowItWorksContent({ user }) {
                         maximizing both. Must Watch Sports was built to highlight the most enjoyable games on TV on a Saturday so that I could spend
                         early Saturdays doing whatever I would like to then cram the best four games of the day back to back.
                     </div>
+
                     <div className="p-6 text-gray-900 dark:text-gray-100">
                         I made the algorithm just for me when I was learning to code so that I could record every game and then watch the best ones without
                         having to sit through commercials. When I was interviewing around I made a website to display the rankings for a portfolio piece. 
@@ -70,8 +71,8 @@ export default function HowItWorksContent({ user }) {
                     <div className="p-6 text-gray-900 dark:text-gray-100">
                         These days the split screen is good enough that I do end up just watching football all day most game days but I still enjoy
                         seeing which games are rated the highest and re-living the best moments of the day. If this site helps you to enjoy football more
-                        or gives you some fun rankings to look at then I am super happy about that. Please reach out with any ideas or feedback or questions (or job offers 🤞)
-                        to{' '}
+                        or gives you some fun rankings to look at then I am super happy about that. Please reach out with any ideas or feedback or questions
+                        (or job offers 🤞) to{' '}
                         <a href="mailto:taylorb@mustwatchsports.com" className="text-blue-600 dark:text-blue-400 hover:underline">
                             taylorb@mustwatchsports.com
                         </a>.
