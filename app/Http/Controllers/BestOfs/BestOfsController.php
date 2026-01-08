@@ -24,12 +24,10 @@ class BestOfsController extends Controller
 
         $years_info = [];
         foreach ($years as $year) {
-
             $weeks = Week::where('year_id', $year->id)->get();
             $weeks_info = [];
             foreach ($weeks as $week) {
                 $weeks_info[] = [
-                    
                     'id' => $week->id,
                     'week' => $week->week,
                     'link' => route('best-of.show', [ 'year' => $year->year, 'week' => $week->week ]),
@@ -37,21 +35,13 @@ class BestOfsController extends Controller
             }
             
             $weeks_info = collect($weeks_info)->sortBy('week')->values()->all();
-            foreach ($weeks_info as $key => $week_info) {
-                if ($week_info['week'] == 16) {
-                    $weeks_info[$key]['week'] = 'BOWLS';
-                }
-            }
-
             $weeks_info[] = [
-
                 'id' => 0,
                 'week' => 'All',
                 'link' => route('best-of.show', [ 'year' => $year->year ]),
             ];
 
             $years_info[] = [
-
                 'weeks' => $weeks_info,
                 'year' => $year->year,
                 'id' => $year->id,
@@ -60,7 +50,6 @@ class BestOfsController extends Controller
 
         return Inertia::render('Weeks/AllWeeks', [
             'user' => $user ? [
-
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
@@ -80,12 +69,10 @@ class BestOfsController extends Controller
         $year_object = Year::where('year', $year)->first();
 
         if ($week) {
-
             $week_object = Week::where('year_id', $year_object->id)->where('week', $week)->first();
             $games = $week_object->games;
 
         } else {
-
             $week_object = null;
             $games = collect([]);
             $all_weeks_objects = Week::where('year_id', $year_object->id)->get();
@@ -101,12 +88,12 @@ class BestOfsController extends Controller
         $top_talent_score_games = [];
         $top_penalty_score_games = [];
         foreach ($games as $game) {
-
             $overall_score = $game_controller->calculateDefaultOverallScore($game);
             $game_info = $game_controller->getDefaultGameInfo($game, [], $overall_score);
 
             if (count($top_overall_games) < 20) { // Change from 5 to 20
                 $top_overall_games[] = $game_info;
+
             } else {
                 $top_overall_games = $game_controller->sortGames($top_overall_games);
                 if ($game_info['overall_score'] > $top_overall_games[19]['overall_score']) { // Change index from 4 to 19
@@ -164,14 +151,12 @@ class BestOfsController extends Controller
         }
 
         if ($week_object) {
-
             $week = $week_object->week;
             $date_string = 'Week ' . (string) $week_object->week .', '. (string) $year_object->year;
             $head = "Best of $date_string";
             $games['week'] = $week_object->week;
 
         } else {
-
             $week = null;
             $date_string = 'All Weeks, '. (string) $year_object->year;
             $head_string = (string) $year_object->year;
@@ -184,7 +169,6 @@ class BestOfsController extends Controller
 
         $top_overall_games = $game_controller->sortGames($top_overall_games);
         $games['time_slots'][] = [
-
             'id' => 0,
             'time_slot' => 'Highest Overall Score',
             'date' => $date_string,
@@ -195,7 +179,6 @@ class BestOfsController extends Controller
 
         $top_score_score_games = $game_controller->sortGames($top_score_score_games, 'score_score');
         $games['time_slots'][] = [
-
             'id' => 1,
             'time_slot' => 'Highest Score Score',
             'date' => $date_string,
@@ -206,7 +189,6 @@ class BestOfsController extends Controller
 
         $top_importance_score_games = $game_controller->sortGames($top_importance_score_games, 'importance_score');
         $games['time_slots'][] = [
-
             'id' => 2,
             'time_slot' => 'Highest Game Importance Score',
             'date' => $date_string,
@@ -217,7 +199,6 @@ class BestOfsController extends Controller
 
         $top_explosiveness_score_games = $game_controller->sortGames($top_explosiveness_score_games, 'explosiveness_score');
         $games['time_slots'][] = [
-
             'id' => 3,
             'time_slot' => 'Highest Explosiveness Score',
             'date' => $date_string,
@@ -228,7 +209,6 @@ class BestOfsController extends Controller
 
         $top_talent_score_games = $game_controller->sortGames($top_talent_score_games, 'talent_score');
         $games['time_slots'][] = [
-
             'id' => 4,
             'time_slot' => 'Highest Talent Score',
             'date' => $date_string,
@@ -239,7 +219,6 @@ class BestOfsController extends Controller
 
         $top_penalty_score_games = $game_controller->sortGames($top_penalty_score_games, 'penalty_score');
         $games['time_slots'][] = [
-
             'id' => 5,
             'time_slot' => 'Highest Penalty Score',
             'date' => $date_string,
@@ -250,7 +229,6 @@ class BestOfsController extends Controller
 
         return Inertia::render('BestOfs/BestOfs', [
             'user' => $user ? [
-
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
@@ -272,7 +250,6 @@ class BestOfsController extends Controller
             ->first();
 
         if (!$week_object) {
-
             $year_object = Year::where('year', Year::max('year') - 1)->first();
             $week_object = Week::where('year_id', $year_object->id)
             ->whereHas('games', function ($query) {
